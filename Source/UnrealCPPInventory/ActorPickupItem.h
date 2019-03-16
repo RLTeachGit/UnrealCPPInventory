@@ -14,7 +14,7 @@ class UNREALCPPINVENTORY_API UActorPickupItem : public UActorComponent
 
 public:	
 	// Sets default values for this component's properties
-	UActorPickupItem();
+	UActorPickupItem(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	// Called when the game starts
@@ -25,5 +25,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 		
-	
+	UPROPERTY()
+	UStaticMeshComponent* PickupMeshComponent;
+
+	UPROPERTY(EditAnywhere, Category = "User")
+	UStaticMesh* PickupMesh;
 };

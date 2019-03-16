@@ -6,8 +6,11 @@
 #include <EngineGlobals.h> //Needed for GEngine->AddOnScreenDebugMessage()
 #include <Runtime/Engine/Classes/Engine/Engine.h> //Needed for GEngine->AddOnScreenDebugMessage()
 
-#define DebugPrint(text) if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 1.5, FColor::White,text); UE_LOG(LogTemp,Log,TEXT(text))}
-#define ErrorPrint(text) if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 1.5, FColor::Red,text); UE_LOG(LogTemp,Error,TEXT(text))}
+#include "GameFramework/Actor.h"
+
+
+#define DebugPrint(text) {if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 1.5, FColor::White,text); UE_LOG(LogTemp,Log,TEXT(text))}}
+#define ErrorPrint(text) {if (GEngine) {GEngine->AddOnScreenDebugMessage(-1, 1.5, FColor::Red,text); UE_LOG(LogTemp,Error,TEXT(text))}}
 
 
 // Sets default values for this component's properties
@@ -17,20 +20,9 @@ UMySceneComponent::UMySceneComponent(const FObjectInitializer& ObjectInitializer
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
     PickupMeshComponent = ObjectInitializer.CreateDefaultSubobject<UStaticMeshComponent>(this,TEXT("PickupMeshComponent"));
-    //PickupMeshComponent->RegisterComponent();
-    PickupMeshComponent->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform); //Set Parent to us
-    //PickupMeshComponent->SetupAttachment();
-/*
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereVisualAsset(TEXT("/Game/Geometry/Meshes/1M_Cube"));
-    if (SphereVisualAsset.Succeeded())
-    {
-        PickupMeshComponent->SetStaticMesh(SphereVisualAsset.Object);
-        PickupMeshComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
-        PickupMeshComponent->SetWorldScale3D(FVector(1.0f));
-    }
- */
+
     PickupMeshComponent->SetStaticMesh(PickupMesh);
-    DebugPrint("UMySceneComponent()");
+//	PickupMeshComponent->SetupAttachment(this);
 }
 
 void UMySceneComponent::PostInitProperties()
@@ -39,7 +31,7 @@ void UMySceneComponent::PostInitProperties()
     if( PickupMeshComponent != nullptr )
     {
         PickupMeshComponent->SetStaticMesh(PickupMesh);
-        DebugPrint("SetStaticMesh()");
+		DebugPrint("SetStaticMesh()");
     }
     Super::PostInitProperties(); //Must call parent version or Kaboom
 }
@@ -57,7 +49,7 @@ void UMySceneComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyCh
         if( PickupMeshComponent != nullptr )
         {
             PickupMeshComponent->SetStaticMesh(PickupMesh);
-            DebugPrint("SetStaticMesh()");
+			DebugPrint("SetStaticMesh()");
         }
     }
     
